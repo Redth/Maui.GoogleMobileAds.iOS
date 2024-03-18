@@ -1,0 +1,411 @@
+diff -Naur .tmp/from/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/GADAdChoicesPosition.h .tmp/to/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/GADAdChoicesPosition.h
+--- .tmp/from/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/GADAdChoicesPosition.h	1969-12-31 19:00:00
++++ .tmp/to/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/GADAdChoicesPosition.h	2024-02-08 17:03:45
+@@ -0,0 +1,16 @@
++//
++//  GADNativeAdViewAdOptions.h
++//  Google Mobile Ads SDK
++//
++//  Copyright 2023 Google LLC. All rights reserved.
++//
++
++#import <Foundation/Foundation.h>
++
++/// Position of the AdChoices icon in the containing ad.
++typedef NS_ENUM(NSInteger, GADAdChoicesPosition) {
++  GADAdChoicesPositionTopRightCorner,     ///< Top right corner.
++  GADAdChoicesPositionTopLeftCorner,      ///< Top left corner.
++  GADAdChoicesPositionBottomRightCorner,  ///< Bottom right corner.
++  GADAdChoicesPositionBottomLeftCorner    ///< Bottom Left Corner.
++};
+diff -Naur .tmp/from/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/GADAdFormat.h .tmp/to/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/GADAdFormat.h
+--- .tmp/from/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/GADAdFormat.h	2023-08-01 18:53:15
++++ .tmp/to/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/GADAdFormat.h	2024-02-08 17:03:45
+@@ -6,14 +6,14 @@
+ //
+ 
+ #import <Foundation/Foundation.h>
++#import <GoogleMobileAds/GoogleMobileAdsDefines.h>
+ 
+ /// Requested ad format.
+ typedef NS_ENUM(NSInteger, GADAdFormat) {
+-  GADAdFormatBanner,                ///< Banner.
+-  GADAdFormatInterstitial,          ///< Interstitial.
+-  GADAdFormatRewarded,              ///< Rewarded.
+-  GADAdFormatNative,                ///< Native.
+-  GADAdFormatRewardedInterstitial,  ///< Rewarded interstitial.
+-  GADAdFormatUnknown,               ///< Unknown.
+-  GADAdFormatAppOpen,               ///< App open.
++  GADAdFormatBanner = 0,                ///< Banner.
++  GADAdFormatInterstitial = 1,          ///< Interstitial.
++  GADAdFormatRewarded = 2,              ///< Rewarded.
++  GADAdFormatNative = 3,                ///< Native.
++  GADAdFormatRewardedInterstitial = 4,  ///< Rewarded interstitial.
++  GADAdFormatAppOpen = 6,  ///< App open.
+ };
+diff -Naur .tmp/from/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/GADAdLoader.h .tmp/to/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/GADAdLoader.h
+--- .tmp/from/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/GADAdLoader.h	2023-08-01 18:53:15
++++ .tmp/to/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/GADAdLoader.h	2024-02-08 17:03:45
+@@ -20,7 +20,7 @@
+ @interface GADAdLoader : NSObject
+ 
+ /// Object notified when an ad request succeeds or fails. Must conform to requested ad types'
+-/// delegate protocols.
++/// delegate protocol. This property must be set before initiating ad requests.
+ @property(nonatomic, weak, nullable) id<GADAdLoaderDelegate> delegate;
+ 
+ /// The ad loader's ad unit ID.
+diff -Naur .tmp/from/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/GADAppOpenAd.h .tmp/to/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/GADAppOpenAd.h
+--- .tmp/from/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/GADAppOpenAd.h	2023-08-01 18:53:15
++++ .tmp/to/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/GADAppOpenAd.h	2024-02-08 17:03:45
+@@ -47,18 +47,14 @@
+ 
+ /// Returns whether the app open ad can be presented from the provided root view controller. Sets
+ /// the error out parameter if the app open ad can't be presented. Must be called on the main
+-/// thread.
+-- (BOOL)canPresentFromRootViewController:(nonnull UIViewController *)rootViewController
++/// thread. If rootViewController is nil, uses the top view controller of the application's main
++/// window.
++- (BOOL)canPresentFromRootViewController:(nullable UIViewController *)rootViewController
+                                    error:(NSError *_Nullable __autoreleasing *_Nullable)error;
+ 
+ /// Presents the app open ad with the provided view controller. Must be called on the main thread.
+-- (void)presentFromRootViewController:(nonnull UIViewController *)rootViewController;
+-
+-#pragma mark - Deprecated
+-/// Deprecated. Use +loadWithAdUnitID:request:completionHandler instead.
+-+ (void)loadWithAdUnitID:(nonnull NSString *)adUnitID
+-                 request:(nullable GADRequest *)request
+-             orientation:(UIInterfaceOrientation)orientation
+-       completionHandler:(nonnull GADAppOpenAdLoadCompletionHandler)completionHandler;
++/// If rootViewController is nil, attempts to present from the top view controller of the
++/// application's main window.
++- (void)presentFromRootViewController:(nullable UIViewController *)rootViewController;
+ 
+ @end
+diff -Naur .tmp/from/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/GADBannerView.h .tmp/to/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/GADBannerView.h
+--- .tmp/from/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/GADBannerView.h	2023-08-01 18:53:15
++++ .tmp/to/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/GADBannerView.h	2024-02-08 17:03:45
+@@ -36,9 +36,9 @@
+ /// Example AdMob ad unit ID: @"ca-app-pub-0123456789012345/0123456789"
+ @property(nonatomic, copy, nullable) IBInspectable NSString *adUnitID;
+ 
+-/// Required reference to a root view controller that is used by the banner to present full screen
+-/// content after the user interacts with the ad. The root view controller is most commonly the view
+-/// controller displaying the banner.
++/// Reference to a root view controller that is used by the banner to present full screen
++/// content after the user interacts with the ad. If this is nil, the view controller containing the
++/// banner view is used.
+ @property(nonatomic, weak, nullable) IBOutlet UIViewController *rootViewController;
+ 
+ /// Required to set this banner view to a proper size. Never create your own GADAdSize directly.
+diff -Naur .tmp/from/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/GADInterstitialAd.h .tmp/to/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/GADInterstitialAd.h
+--- .tmp/from/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/GADInterstitialAd.h	2023-08-01 18:53:15
++++ .tmp/to/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/GADInterstitialAd.h	2024-02-08 17:03:45
+@@ -50,13 +50,15 @@
+ 
+ /// Returns whether the interstitial ad can be presented from the provided root view
+ /// controller. Sets the error out parameter if the ad can't be presented. Must be called on the
+-/// main thread.
+-- (BOOL)canPresentFromRootViewController:(nonnull UIViewController *)rootViewController
++/// main thread. If rootViewController is nil, uses the top view controller of the application's
++/// main window.
++- (BOOL)canPresentFromRootViewController:(nullable UIViewController *)rootViewController
+                                    error:(NSError *_Nullable __autoreleasing *_Nullable)error;
+ 
+ /// Presents the interstitial ad. Must be called on the main thread.
+ ///
+-/// @param rootViewController A view controller to present the ad.
+-- (void)presentFromRootViewController:(nonnull UIViewController *)rootViewController;
++/// @param rootViewController A view controller to present the ad. If nil, attempts to present from
++/// the top view controller of the application's main window.
++- (void)presentFromRootViewController:(nullable UIViewController *)rootViewController;
+ 
+ @end
+diff -Naur .tmp/from/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/GADMobileAds.h .tmp/to/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/GADMobileAds.h
+--- .tmp/from/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/GADMobileAds.h	2023-08-01 18:53:15
++++ .tmp/to/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/GADMobileAds.h	2024-02-08 17:03:45
+@@ -89,20 +89,15 @@
+ /// to launch Ad Inspector. Set
+ /// GADMobileAds.sharedInstance.requestConfiguration.testDeviceIdentifiers to enable test mode on
+ /// this device.
+-/// @param viewController A view controller to present Ad Inspector.
++/// @param viewController A view controller to present Ad Inspector. If nil, uses the top view
++/// controller of the app's main window.
+ /// @param completionHandler A handler to execute when Ad Inspector is closed.
+-- (void)presentAdInspectorFromViewController:(nonnull UIViewController *)viewController
++- (void)presentAdInspectorFromViewController:(nullable UIViewController *)viewController
+                            completionHandler:
+                                (nullable GADAdInspectorCompletionHandler)completionHandler;
+ 
+ /// Registers a web view with the Google Mobile Ads SDK to improve in-app ad monetization of ads
+ /// within this web view.
+ - (void)registerWebView:(nonnull WKWebView *)webView;
+-
+-#pragma mark Deprecated
+-
+-/// Returns the version of the SDK.
+-@property(nonatomic, nonnull, readonly)
+-    NSString *sdkVersion GAD_DEPRECATED_MSG_ATTRIBUTE("Use versionNumber property instead.");
+ 
+ @end
+diff -Naur .tmp/from/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/GADNativeAdViewAdOptions.h .tmp/to/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/GADNativeAdViewAdOptions.h
+--- .tmp/from/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/GADNativeAdViewAdOptions.h	2023-08-01 18:53:15
++++ .tmp/to/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/GADNativeAdViewAdOptions.h	2024-02-08 17:03:45
+@@ -5,15 +5,8 @@
+ //  Copyright 2016 Google LLC. All rights reserved.
+ //
+ 
++#import <GoogleMobileAds/GADAdChoicesPosition.h>
+ #import <GoogleMobileAds/GADAdLoader.h>
+-
+-/// Position of the AdChoices icon in the containing ad.
+-typedef NS_ENUM(NSInteger, GADAdChoicesPosition) {
+-  GADAdChoicesPositionTopRightCorner,     ///< Top right corner.
+-  GADAdChoicesPositionTopLeftCorner,      ///< Top left corner.
+-  GADAdChoicesPositionBottomRightCorner,  ///< Bottom right corner.
+-  GADAdChoicesPositionBottomLeftCorner    ///< Bottom Left Corner.
+-};
+ 
+ /// Ad loader options for configuring the view of native ads.
+ @interface GADNativeAdViewAdOptions : GADAdLoaderOptions
+diff -Naur .tmp/from/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/GADRequestConfiguration.h .tmp/to/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/GADRequestConfiguration.h
+--- .tmp/from/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/GADRequestConfiguration.h	2023-08-01 18:53:15
++++ .tmp/to/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/GADRequestConfiguration.h	2024-02-08 17:03:45
+@@ -21,8 +21,19 @@
+ FOUNDATION_EXPORT GADMaxAdContentRating _Nonnull const GADMaxAdContentRatingMatureAudience;
+ 
+ /// Add this constant to the testDevices property's array to receive test ads on the simulator.
+-FOUNDATION_EXPORT NSString *_Nonnull const GADSimulatorID;
++FOUNDATION_EXPORT NSString *_Nonnull const GADSimulatorID GAD_DEPRECATED_MSG_ATTRIBUTE(
++    "Deprecated. Simulators are already in test mode by default.");
+ 
++/// Publisher privacy treatment personalization states.
++typedef NS_ENUM(NSInteger, GADPublisherPrivacyPersonalizationState) {
++  /// Indicates that ad requests should receive the default publisher privacy treatment.
++  GADPublisherPrivacyPersonalizationStateDefault = 0,
++  /// Indicates that ad requests should receive personalized publisher privacy treatment.
++  GADPublisherPrivacyPersonalizationStateEnabled = 1,
++  /// Indicates that ad requests should receive non-personalized publisher privacy treatment.
++  GADPublisherPrivacyPersonalizationStateDisabled = 2,
++};
++
+ /// Request configuration. The settings in this class will apply to all ad requests.
+ @interface GADRequestConfiguration : NSObject
+ 
+@@ -69,41 +80,14 @@
+ /// in termination of your Google account.
+ @property(nonatomic, nullable, copy) NSNumber *tagForChildDirectedTreatment;
+ 
+-/// Controls whether the Google Mobile Ads SDK Same App Key is enabled. The value set persists
+-/// across app sessions. The key is enabled by default.
+-- (void)setSameAppKeyEnabled:(BOOL)enabled;
++/// Controls whether the Google Mobile Ads SDK publisher first-party ID, formerly known as the same
++/// app key, is enabled. The value set persists across app sessions. The key is enabled by default.
++- (void)setPublisherFirstPartyIDEnabled:(BOOL)enabled;
+ 
+-#pragma mark - Deprecated
++#pragma mark - Publisher Privacy Treatment
+ 
+-/// This method lets you specify whether the user is under the age of consent.
+-/// https://developers.google.com/admob/ios/targeting#users_under_the_age_of_consent.
+-///
+-/// If you call this method with YES, a TFUA parameter will be included in all ad requests. This
+-/// parameter disables personalized advertising, including remarketing, for all ad requests. It also
+-/// disables requests to third-party ad vendors, such as ad measurement pixels and third-party ad
+-/// servers.
+-- (void)tagForUnderAgeOfConsent:(BOOL)underAgeOfConsent
+-    GAD_DEPRECATED_MSG_ATTRIBUTE(
+-        "This method is deprecated. Use the tagForUnderAgeOfConsent property instead. Calling this "
+-        "method internally sets the property.");
+-
+-/// [Optional] This method lets you specify whether you would like your app to be treated as
+-/// child-directed for purposes of the Children’s Online Privacy Protection Act (COPPA),
+-/// https://www.ftc.gov/business-guidance/privacy-security/childrens-privacy.
+-///
+-/// If you call this method with YES, you are indicating that your app should be treated as
+-/// child-directed for purposes of the Children’s Online Privacy Protection Act (COPPA). If you call
+-/// this method with NO, you are indicating that your app should not be treated as child-directed
+-/// for purposes of the Children’s Online Privacy Protection Act (COPPA). If you do not call this
+-/// method, ad requests will include no indication of how you would like your app treated with
+-/// respect to COPPA.
+-///
+-/// By setting this method, you certify that this notification is accurate and you are authorized to
+-/// act on behalf of the owner of the app. You understand that abuse of this setting may result in
+-/// termination of your Google account.
+-- (void)tagForChildDirectedTreatment:(BOOL)childDirectedTreatment
+-    GAD_DEPRECATED_MSG_ATTRIBUTE(
+-        "This method is deprecated. Use the tagForChildDirectedTreatment property instead. "
+-        "PCalling this method internally sets the property.");
++/// This property lets you specify the personalization treatment that applies to subsequent ad
++/// requests.
++@property(nonatomic) GADPublisherPrivacyPersonalizationState publisherPrivacyPersonalizationState;
+ 
+ @end
+diff -Naur .tmp/from/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/GADResponseInfo.h .tmp/to/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/GADResponseInfo.h
+--- .tmp/from/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/GADResponseInfo.h	2023-08-01 18:53:15
++++ .tmp/to/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/GADResponseInfo.h	2024-02-08 17:03:45
+@@ -74,10 +74,4 @@
+ /// JSON-safe dictionary representation of the response info.
+ @property(nonatomic, readonly, nonnull) NSDictionary<NSString *, id> *dictionaryRepresentation;
+ 
+-#pragma mark - Deprecated
+-
+-/// Deprecated. Use loadedAdNetworkResponseInfo.adNetworkClassName instead.
+-@property(nonatomic, readonly, nullable) NSString *adNetworkClassName GAD_DEPRECATED_MSG_ATTRIBUTE(
+-    "Deprecated. Use loadedAdNetworkResponseInfo.adNetworkClassName instead.");
+-
+ @end
+diff -Naur .tmp/from/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/GADRewardedAd.h .tmp/to/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/GADRewardedAd.h
+--- .tmp/from/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/GADRewardedAd.h	2023-08-01 18:53:15
++++ .tmp/to/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/GADRewardedAd.h	2024-02-08 17:03:45
+@@ -59,15 +59,17 @@
+ 
+ /// Returns whether the rewarded ad can be presented from the provided root view
+ /// controller. Sets the error out parameter if the ad can't be presented. Must be called on the
+-/// main thread.
+-- (BOOL)canPresentFromRootViewController:(nonnull UIViewController *)rootViewController
++/// main thread. If rootViewController is nil, uses the top view controller of the application's
++/// main window.
++- (BOOL)canPresentFromRootViewController:(nullable UIViewController *)rootViewController
+                                    error:(NSError *_Nullable __autoreleasing *_Nullable)error;
+ 
+ /// Presents the rewarded ad. Must be called on the main thread.
+ ///
+-/// @param rootViewController A view controller to present the ad.
++/// @param rootViewController A view controller to present the ad. If nil, attempts to present from
++/// the top view controller of the application's main window.
+ /// @param userDidEarnRewardHandler A handler to execute when the user earns a reward.
+-- (void)presentFromRootViewController:(nonnull UIViewController *)rootViewController
++- (void)presentFromRootViewController:(nullable UIViewController *)rootViewController
+              userDidEarnRewardHandler:(nonnull GADUserDidEarnRewardHandler)userDidEarnRewardHandler;
+ 
+ @end
+diff -Naur .tmp/from/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/GADRewardedInterstitialAd.h .tmp/to/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/GADRewardedInterstitialAd.h
+--- .tmp/from/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/GADRewardedInterstitialAd.h	2023-08-01 18:53:15
++++ .tmp/to/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/GADRewardedInterstitialAd.h	2024-02-08 17:03:45
+@@ -59,16 +59,18 @@
+ 
+ /// Returns whether the rewarded interstitial ad can be presented from the provided root view
+ /// controller. Sets the error out parameter if the ad can't be presented. Must be called on the
+-/// main thread.
+-- (BOOL)canPresentFromRootViewController:(nonnull UIViewController *)rootViewController
++/// main thread. If rootViewController is nil, uses the top view controller of the application's
++/// main window.
++- (BOOL)canPresentFromRootViewController:(nullable UIViewController *)rootViewController
+                                    error:(NSError *_Nullable __autoreleasing *_Nullable)error;
+ 
+ /// Presents the rewarded interstitial ad. Must be called on the main thread.
+ ///
+-/// @param viewController A view controller to present the ad.
++/// @param viewController A view controller to present the ad. If nil, attempts to present from the
++/// top view controller of the application's main window.
+ /// @param userDidEarnRewardHandler A handler to execute when the user earns a reward. adReward
+ /// contains the reward information.
+-- (void)presentFromRootViewController:(nonnull UIViewController *)viewController
++- (void)presentFromRootViewController:(nullable UIViewController *)viewController
+              userDidEarnRewardHandler:(nonnull GADUserDidEarnRewardHandler)userDidEarnRewardHandler;
+ 
+ @end
+diff -Naur .tmp/from/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/GoogleMobileAds.h .tmp/to/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/GoogleMobileAds.h
+--- .tmp/from/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/GoogleMobileAds.h	2023-08-01 18:53:15
++++ .tmp/to/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/GoogleMobileAds.h	2024-02-08 17:03:45
+@@ -11,6 +11,7 @@
+ FOUNDATION_EXPORT const unsigned char GoogleMobileAdsVersionString[];
+ 
+ // Header files.
++#import <GoogleMobileAds/GADAdChoicesPosition.h>
+ #import <GoogleMobileAds/GADAdChoicesView.h>
+ #import <GoogleMobileAds/GADAdFormat.h>
+ #import <GoogleMobileAds/GADAdLoader.h>
+diff -Naur .tmp/from/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/Mediation/GADMediatedUnifiedNativeAdNotificationSource.h .tmp/to/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/Mediation/GADMediatedUnifiedNativeAdNotificationSource.h
+--- .tmp/from/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/Mediation/GADMediatedUnifiedNativeAdNotificationSource.h	2023-08-01 18:53:15
++++ .tmp/to/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/Mediation/GADMediatedUnifiedNativeAdNotificationSource.h	2024-02-08 17:03:45
+@@ -46,11 +46,4 @@
+ + (void)mediatedNativeAdDidEndVideoPlayback:
+     (nonnull id<GADMediatedUnifiedNativeAd>)mediatedNativeAd;
+ 
+-#pragma mark - Deprecated
+-
+-/// Deprecated. No replacement.
+-+ (void)mediatedNativeAdWillLeaveApplication:
+-    (nonnull id<GADMediatedUnifiedNativeAd>)mediatedNativeAd
+-    GAD_DEPRECATED_MSG_ATTRIBUTE("Deprecated. No replacement.");
+-
+ @end
+diff -Naur .tmp/from/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/Mediation/GADMediationAdConfiguration.h .tmp/to/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/Mediation/GADMediationAdConfiguration.h
+--- .tmp/from/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/Mediation/GADMediationAdConfiguration.h	2023-08-01 18:53:15
++++ .tmp/to/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/Mediation/GADMediationAdConfiguration.h	2024-02-08 17:03:45
+@@ -30,29 +30,7 @@
+ /// Extras the publisher registered with -[GADRequest registerAdNetworkExtras:].
+ @property(nonatomic, readonly, nullable) id<GADAdNetworkExtras> extras;
+ 
+-/// The value of childDirectedTreatment supplied by the publisher. Is nil if the publisher hasn't
+-/// specified child directed treatment. Is @YES if child directed treatment is enabled.
+-@property(nonatomic, readonly, nullable) NSNumber *childDirectedTreatment;
+-
+ /// Indicates whether the publisher is requesting test ads.
+ @property(nonatomic, readonly) BOOL isTestRequest;
+-
+-#pragma mark - Deprecated
+-
+-/// Deprecated and unsupported. Always returns NO.
+-@property(nonatomic, readonly) BOOL hasUserLocation GAD_DEPRECATED_MSG_ATTRIBUTE(
+-    "Deprecated and unsupported. Always returns NO.");
+-
+-/// Deprecated and unsupported. Always returns 0.
+-@property(nonatomic, readonly) CGFloat userLatitude GAD_DEPRECATED_MSG_ATTRIBUTE(
+-    "Deprecated and unsupported. Always returns 0.");
+-
+-/// Deprecated and unsupported. Always returns 0.
+-@property(nonatomic, readonly) CGFloat userLongitude GAD_DEPRECATED_MSG_ATTRIBUTE(
+-    "Deprecated and unsupported. Always returns 0.");
+-
+-/// Deprecated and unsupported. Always returns 0.
+-@property(nonatomic, readonly) CGFloat userLocationAccuracyInMeters GAD_DEPRECATED_MSG_ATTRIBUTE(
+-    "Deprecated and unsupported. Always returns 0.");
+ 
+ @end
+diff -Naur .tmp/from/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/Mediation/GADMediationAdEventDelegate.h .tmp/to/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/Mediation/GADMediationAdEventDelegate.h
+--- .tmp/from/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/Mediation/GADMediationAdEventDelegate.h	2023-08-01 18:53:15
++++ .tmp/to/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework/ios-arm64/GoogleMobileAds.framework/Headers/Mediation/GADMediationAdEventDelegate.h	2024-02-08 17:03:45
+@@ -39,17 +39,11 @@
+ /// Reports banner related information to the Google Mobile Ads SDK from the adapter.
+ @protocol GADMediationBannerAdEventDelegate <GADMediationAdEventDelegate>
+ 
+-/// Deprecated. No replacement.
+-- (void)willBackgroundApplication GAD_DEPRECATED_MSG_ATTRIBUTE("Deprecated. No replacement.");
+-
+ @end
+ 
+ /// Reports interstitial related information to the Google Mobile Ads SDK from the adapter.
+ @protocol GADMediationInterstitialAdEventDelegate <GADMediationAdEventDelegate>
+ 
+-/// Deprecated. No replacement.
+-- (void)willBackgroundApplication GAD_DEPRECATED_MSG_ATTRIBUTE("Deprecated. No replacement.");
+-
+ @end
+ 
+ /// Reports native related information to the Google Mobile Ads SDK from the adapter.
+@@ -70,9 +64,6 @@
+ /// Notifies Google Mobile Ads SDK that the GADMediationAd unmuted video playback.
+ - (void)didUnmuteVideo;
+ 
+-/// Deprecated. No replacement.
+-- (void)willBackgroundApplication GAD_DEPRECATED_MSG_ATTRIBUTE("Deprecated. No replacement.");
+-
+ @end
+ 
+ /// Reports rewarded related information to the Google Mobile Ads SDK from the adapter.
+@@ -86,11 +77,6 @@
+ 
+ /// Notifies Google Mobile Ads SDK that the GADMediationAd's video playback finished.
+ - (void)didEndVideo;
+-
+-#pragma mark - Deprecated
+-/// Deprecated. Use -didRewardUser.
+-- (void)didRewardUserWithReward:(nonnull GADAdReward *)reward
+-    GAD_DEPRECATED_MSG_ATTRIBUTE("Deprecated. Use -didRewardUser.");
+ 
+ @end
+ 

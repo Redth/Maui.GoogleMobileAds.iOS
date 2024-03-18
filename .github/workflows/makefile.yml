@@ -16,7 +16,7 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Build
-      run: make bindings
+      run: make binding
 
     - name: Artifact
       uses: actions/upload-artifact@v4.3.1

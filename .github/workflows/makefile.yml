@@ -2,13 +2,12 @@ name: Build
 
 on:
   push:
-    branches: [ "main" ]
   pull_request:
-    branches: [ "main" ]
+  release:
+    types: [published]
 
 jobs:
-  build:
-
+  Build:
     runs-on: macos-latest
 
     steps:
@@ -27,3 +26,17 @@ jobs:
       with:
         name: NuGet
         path: .build/NuGet/*.nupkg
+
+  Publish:
+    runs-on: macos-latest
+    needs: Build
+    if: github.event_name == 'release'
+    steps:
+      - name: Download Artifacts
+        uses: actions/download-artifact@v1
+        with:
+          name: NuGet
+      - name: Publish NuGet
+        run: |
+          dotnet nuget add source --username USERNAME --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/redth/index.json"
+          dotnet nuget push "NuGet/*.nupkg" --source "github"

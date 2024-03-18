@@ -7,6 +7,17 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <NativeReference Include="../.build/UserMessagingPlatform.xcframework">
+            <Kind>Framework</Kind>
+            <SmartLink>True</SmartLink>
+        </NativeReference>
+    </ItemGroup>
+
+    <PropertyGroup>
+        <PackageId>UserMessagingPlatform.iOS.Binding</PackageId>
+    </PropertyGroup>
+
+    <ItemGroup>
         <ObjcBindingApiDefinition Include="ApiDefinition.cs"/>
         <ObjcBindingCoreSource Include="StructsAndEnums.cs"/>
     </ItemGroup>

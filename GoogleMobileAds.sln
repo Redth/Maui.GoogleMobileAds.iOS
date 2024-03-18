@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoogleMobileAds.iOS.Binding", "GoogleMobileAds.iOS.Binding\GoogleMobileAds.iOS.Binding.csproj", "{3651B164-DA72-4E39-A81B-A88BF7E38986}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserMessagingPlatform.iOS.Binding", "UserMessagingPlatform.iOS.Binding\UserMessagingPlatform.iOS.Binding.csproj", "{C0AD241D-F215-4F87-9A37-E4242BE81771}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3651B164-DA72-4E39-A81B-A88BF7E38986}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3651B164-DA72-4E39-A81B-A88BF7E38986}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3651B164-DA72-4E39-A81B-A88BF7E38986}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3651B164-DA72-4E39-A81B-A88BF7E38986}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C0AD241D-F215-4F87-9A37-E4242BE81771}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0AD241D-F215-4F87-9A37-E4242BE81771}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0AD241D-F215-4F87-9A37-E4242BE81771}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0AD241D-F215-4F87-9A37-E4242BE81771}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

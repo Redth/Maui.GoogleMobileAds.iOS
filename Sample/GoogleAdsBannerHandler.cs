@@ -63,7 +63,7 @@ public partial class GoogleAdsBannerView : View, IGoogleAdsBannerView
 #if IOS
 public class BannerDg : GoogleMobileAds.GADBannerViewDelegate
 {
-   public override void BannerView(GADBannerView bannerView, NSError error)
+   public override void BannerViewDidFailToReceiveAd(GADBannerView bannerView, NSError error)
 	{
 		Console.WriteLine("DidFailToReceiveAd " + error.Description);
 	}

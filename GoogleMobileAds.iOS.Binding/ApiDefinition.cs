@@ -116,7 +116,7 @@ namespace GoogleMobileAds
 		// @required -(void)adLoader:(GADAdLoader * _Nonnull)adLoader didFailToReceiveAdWithError:(NSError * _Nonnull)error;
 		[Abstract]
 		[Export("adLoader:didFailToReceiveAdWithError:")]
-		void AdLoader(GADAdLoader adLoader, NSError error);
+		void AdLoaderDidFailToReceiveAd(GADAdLoader adLoader, NSError error);
 
 		// @optional -(void)adLoaderDidFinishLoading:(GADAdLoader * _Nonnull)adLoader;
 		[Export("adLoaderDidFinishLoading:")]
@@ -367,11 +367,11 @@ namespace GoogleMobileAds
 	{
 		// @optional -(void)adView:(GADBannerView * _Nonnull)banner didReceiveAppEvent:(NSString * _Nonnull)name withInfo:(NSString * _Nullable)info;
 		[Export("adView:didReceiveAppEvent:withInfo:")]
-		void AdView(GADBannerView banner, string name, [NullAllowed] string info);
+		void AdViewDidReceiveAppEvent(GADBannerView banner, string name, [NullAllowed] string info);
 
 		// @optional -(void)interstitialAd:(GADInterstitialAd * _Nonnull)interstitialAd didReceiveAppEvent:(NSString * _Nonnull)name withInfo:(NSString * _Nullable)info;
 		[Export("interstitialAd:didReceiveAppEvent:withInfo:")]
-		void InterstitialAd(GADInterstitialAd interstitialAd, string name, [NullAllowed] string info);
+		void InterstitialAdDidReceiveAppEvent(GADInterstitialAd interstitialAd, string name, [NullAllowed] string info);
 	}
 
 	// @protocol GADFullScreenPresentingAd <NSObject>
@@ -413,7 +413,7 @@ namespace GoogleMobileAds
 
 		// @optional -(void)ad:(id<GADFullScreenPresentingAd> _Nonnull)ad didFailToPresentFullScreenContentWithError:(NSError * _Nonnull)error;
 		[Export("ad:didFailToPresentFullScreenContentWithError:")]
-		void Ad(GADFullScreenPresentingAd ad, NSError error);
+		void AdDidFailToPresentFullScreenContent(GADFullScreenPresentingAd ad, NSError error);
 
 		// @optional -(void)adWillPresentFullScreenContent:(id<GADFullScreenPresentingAd> _Nonnull)ad;
 		[Export("adWillPresentFullScreenContent:")]
@@ -496,7 +496,7 @@ namespace GoogleMobileAds
 		// +(void)loadWithAdUnitID:(NSString * _Nonnull)adUnitID request:(GADRequest * _Nullable)request completionHandler:(GADAppOpenAdLoadCompletionHandler _Nonnull)completionHandler;
 		[Static]
 		[Export("loadWithAdUnitID:request:completionHandler:")]
-		void LoadWithAdUnitID(string adUnitID, [NullAllowed] GADRequest request,
+		void Load(string adUnitID, [NullAllowed] GADRequest request,
 			GADAppOpenAdLoadCompletionHandler completionHandler);
 
 		[Wrap("WeakFullScreenContentDelegate")]
@@ -572,7 +572,7 @@ namespace GoogleMobileAds
 
 		// @optional -(void)bannerView:(GADBannerView * _Nonnull)bannerView didFailToReceiveAdWithError:(NSError * _Nonnull)error;
 		[Export("bannerView:didFailToReceiveAdWithError:")]
-		void BannerView(GADBannerView bannerView, NSError error);
+		void BannerViewDidFailToReceiveAd(GADBannerView bannerView, NSError error);
 
 		// @optional -(void)bannerViewDidRecordImpression:(GADBannerView * _Nonnull)bannerView;
 		[Export("bannerViewDidRecordImpression:")]
@@ -655,12 +655,12 @@ namespace GoogleMobileAds
 		// @required -(void)customEventBanner:(id<GADCustomEventBanner> _Nonnull)customEvent didReceiveAd:(UIView * _Nonnull)view;
 		[Abstract]
 		[Export("customEventBanner:didReceiveAd:")]
-		void CustomEventBanner(GADCustomEventBanner customEvent, UIView view);
+		void CustomEventBannerDidReceiveAd(GADCustomEventBanner customEvent, UIView view);
 
 		// @required -(void)customEventBanner:(id<GADCustomEventBanner> _Nonnull)customEvent didFailAd:(NSError * _Nullable)error;
 		[Abstract]
 		[Export("customEventBanner:didFailAd:")]
-		void CustomEventBanner(GADCustomEventBanner customEvent, [NullAllowed] NSError error);
+		void CustomEventBannerDidFailAd(GADCustomEventBanner customEvent, [NullAllowed] NSError error);
 
 		// @required -(void)customEventBannerWasClicked:(id<GADCustomEventBanner> _Nonnull)customEvent;
 		[Abstract]
@@ -740,7 +740,7 @@ namespace GoogleMobileAds
 		// @required -(void)requestBannerAd:(GADAdSize)adSize parameter:(NSString * _Nullable)serverParameter label:(NSString * _Nullable)serverLabel request:(GADCustomEventRequest * _Nonnull)request;
 		[Abstract]
 		[Export("requestBannerAd:parameter:label:request:")]
-		void Parameter(GADAdSize adSize, [NullAllowed] string serverParameter, [NullAllowed] string serverLabel,
+		void RequestBannerAd(GADAdSize adSize, [NullAllowed] string serverParameter, [NullAllowed] string serverLabel,
 			GADCustomEventRequest request);
 	}
 
@@ -778,7 +778,7 @@ namespace GoogleMobileAds
 		// @required -(void)customEventInterstitial:(id<GADCustomEventInterstitial> _Nonnull)customEvent didFailAd:(NSError * _Nullable)error;
 		[Abstract]
 		[Export("customEventInterstitial:didFailAd:")]
-		void CustomEventInterstitial(GADCustomEventInterstitial customEvent, [NullAllowed] NSError error);
+		void CustomEventInterstitialDidFailAd(GADCustomEventInterstitial customEvent, [NullAllowed] NSError error);
 
 		// @required -(void)customEventInterstitialWasClicked:(id<GADCustomEventInterstitial> _Nonnull)customEvent;
 		[Abstract]
@@ -803,7 +803,7 @@ namespace GoogleMobileAds
 		// @required -(void)customEventInterstitial:(id<GADCustomEventInterstitial> _Nonnull)customEvent didReceiveAd:(NSObject * _Nonnull)ad __attribute__((deprecated("Use customEventInterstitialDidReceiveAd:.")));
 		[Abstract]
 		[Export("customEventInterstitial:didReceiveAd:")]
-		void CustomEventInterstitial(GADCustomEventInterstitial customEvent, NSObject ad);
+		void CustomEventInterstitialDidReceiveAd(GADCustomEventInterstitial customEvent, NSObject ad);
 
 		// @required -(void)customEventInterstitialWillLeaveApplication:(id<GADCustomEventInterstitial> _Nonnull)customEvent __attribute__((deprecated("Deprecated. No replacement.")));
 		[Abstract]
@@ -837,7 +837,7 @@ namespace GoogleMobileAds
 		// @required -(void)requestInterstitialAdWithParameter:(NSString * _Nullable)serverParameter label:(NSString * _Nullable)serverLabel request:(GADCustomEventRequest * _Nonnull)request;
 		[Abstract]
 		[Export("requestInterstitialAdWithParameter:label:request:")]
-		void RequestInterstitialAdWithParameter([NullAllowed] string serverParameter, [NullAllowed] string serverLabel,
+		void RequestInterstitialAd([NullAllowed] string serverParameter, [NullAllowed] string serverLabel,
 			GADCustomEventRequest request);
 
 		// @required -(void)presentFromRootViewController:(UIViewController * _Nonnull)rootViewController;
@@ -872,7 +872,7 @@ namespace GoogleMobileAds
 		// @required -(void)requestNativeAdWithParameter:(NSString * _Nonnull)serverParameter request:(GADCustomEventRequest * _Nonnull)request adTypes:(NSArray * _Nonnull)adTypes options:(NSArray * _Nonnull)options rootViewController:(UIViewController * _Nonnull)rootViewController;
 		[Abstract]
 		[Export("requestNativeAdWithParameter:request:adTypes:options:rootViewController:")]
-		void Request(string serverParameter, GADCustomEventRequest request, NSObject[] adTypes, NSObject[] options,
+		void RequestNativeAd(string serverParameter, GADCustomEventRequest request, NSObject[] adTypes, NSObject[] options,
 			UIViewController rootViewController);
 
 		// @required -(BOOL)handlesUserClicks;
@@ -1038,7 +1038,7 @@ namespace GoogleMobileAds
 
 		// -(BOOL)startWithError:(NSError * _Nullable * _Nullable)error;
 		[Export("startWithError:")]
-		bool StartWithError([NullAllowed] out NSError error);
+		bool Start([NullAllowed] out NSError error);
 	}
 
 	// @interface GADVideoController : NSObject
@@ -1189,12 +1189,12 @@ namespace GoogleMobileAds
 		// @required -(NSArray<NSString *> * _Nonnull)customNativeAdFormatIDsForAdLoader:(GADAdLoader * _Nonnull)adLoader;
 		[Abstract]
 		[Export("customNativeAdFormatIDsForAdLoader:")]
-		string[] CustomNativeAdFormatIDsForAdLoader(GADAdLoader adLoader);
+		string[] GetCustomNativeAdFormatIDs(GADAdLoader adLoader);
 
 		// @required -(void)adLoader:(GADAdLoader * _Nonnull)adLoader didReceiveCustomNativeAd:(GADCustomNativeAd * _Nonnull)customNativeAd;
 		[Abstract]
 		[Export("adLoader:didReceiveCustomNativeAd:")]
-		void AdLoader(GADAdLoader adLoader, GADCustomNativeAd customNativeAd);
+		void AdLoaderDidReceiveCustomNativeAd(GADAdLoader adLoader, GADCustomNativeAd customNativeAd);
 	}
 
 	// @protocol GADCustomNativeAdDelegate <NSObject>
@@ -1741,7 +1741,7 @@ namespace GoogleMobileAds
 		// @required -(void)adLoader:(GADAdLoader * _Nonnull)adLoader didReceiveNativeAd:(GADNativeAd * _Nonnull)nativeAd;
 		[Abstract]
 		[Export("adLoader:didReceiveNativeAd:")]
-		void DidReceiveNativeAd(GADAdLoader adLoader, GADNativeAd nativeAd);
+		void AdLoaderDidReceiveNativeAd(GADAdLoader adLoader, GADNativeAd nativeAd);
 	}
 
 	// @interface GADNativeAdView : UIView
@@ -1805,7 +1805,7 @@ namespace GoogleMobileAds
 		// @required -(void)nativeAd:(GADNativeAd * _Nonnull)nativeAd didReceiveUnconfirmedClickOnAssetID:(GADNativeAssetIdentifier _Nonnull)assetID;
 		[Abstract]
 		[Export("nativeAd:didReceiveUnconfirmedClickOnAssetID:")]
-		void NativeAd(GADNativeAd nativeAd, string assetID);
+		void NativeAdDidReceiveUnconfirmedClickOnAssetID(GADNativeAd nativeAd, string assetID);
 
 		// @required -(void)nativeAdDidCancelUnconfirmedClick:(GADNativeAd * _Nonnull)nativeAd;
 		[Abstract]
@@ -1936,13 +1936,13 @@ namespace GoogleMobileAds
 		// +(void)createQueryInfoWithRequest:(GADRequest * _Nullable)request adFormat:(GADAdFormat)adFormat completionHandler:(GADQueryInfoCreationCompletionHandler _Nonnull)completionHandler;
 		[Static]
 		[Export("createQueryInfoWithRequest:adFormat:completionHandler:")]
-		void CreateQueryInfoWithRequest([NullAllowed] GADRequest request, GADAdFormat adFormat,
+		void CreateQueryInfo([NullAllowed] GADRequest request, GADAdFormat adFormat,
 			GADQueryInfoCreationCompletionHandler completionHandler);
 
 		// +(void)createQueryInfoWithRequest:(GADRequest * _Nullable)request adFormat:(GADAdFormat)adFormat adUnitID:(NSString * _Nonnull)adUnitID completionHandler:(GADQueryInfoCreationCompletionHandler _Nonnull)completionHandler;
 		[Static]
 		[Export("createQueryInfoWithRequest:adFormat:adUnitID:completionHandler:")]
-		void CreateQueryInfoWithRequest([NullAllowed] GADRequest request, GADAdFormat adFormat, string adUnitID,
+		void CreateQueryInfo([NullAllowed] GADRequest request, GADAdFormat adFormat, string adUnitID,
 			GADQueryInfoCreationCompletionHandler completionHandler);
 	}
 
@@ -1981,7 +1981,7 @@ namespace GoogleMobileAds
 		// +(void)loadWithAdUnitID:(NSString * _Nonnull)adUnitID request:(GADRequest * _Nullable)request completionHandler:(GADRewardedAdLoadCompletionHandler _Nonnull)completionHandler;
 		[Static]
 		[Export("loadWithAdUnitID:request:completionHandler:")]
-		void LoadWithAdUnitID(string adUnitID, [NullAllowed] GADRequest request,
+		void Load(string adUnitID, [NullAllowed] GADRequest request,
 			GADRewardedAdLoadCompletionHandler completionHandler);
 
 		// -(BOOL)canPresentFromRootViewController:(UIViewController * _Nullable)rootViewController error:(NSError * _Nullable * _Nullable)error;
@@ -2031,7 +2031,7 @@ namespace GoogleMobileAds
 		// +(void)loadWithAdUnitID:(NSString * _Nonnull)adUnitID request:(GADRequest * _Nullable)request completionHandler:(GADRewardedInterstitialAdLoadCompletionHandler _Nonnull)completionHandler;
 		[Static]
 		[Export("loadWithAdUnitID:request:completionHandler:")]
-		void LoadWithAdUnitID(string adUnitID, [NullAllowed] GADRequest request,
+		void Load(string adUnitID, [NullAllowed] GADRequest request,
 			GADRewardedInterstitialAdLoadCompletionHandler completionHandler);
 
 		// -(BOOL)canPresentFromRootViewController:(UIViewController * _Nullable)rootViewController error:(NSError * _Nullable * _Nullable)error;
@@ -2106,12 +2106,12 @@ namespace GoogleMobileAds
 		// @required -(NSArray<NSValue *> * _Nonnull)validBannerSizesForAdLoader:(GADAdLoader * _Nonnull)adLoader;
 		[Abstract]
 		[Export("validBannerSizesForAdLoader:")]
-		NSValue[] ValidBannerSizesForAdLoader(GADAdLoader adLoader);
+		NSValue[] ValidBannerSizes(GADAdLoader adLoader);
 
 		// @required -(void)adLoader:(GADAdLoader * _Nonnull)adLoader didReceiveGAMBannerView:(GAMBannerView * _Nonnull)bannerView;
 		[Abstract]
 		[Export("adLoader:didReceiveGAMBannerView:")]
-		void AdLoader(GADAdLoader adLoader, GAMBannerView bannerView);
+		void AdLoaderDidReceiveGAMBannerView(GADAdLoader adLoader, GAMBannerView bannerView);
 	}
 
 	// @interface GAMBannerView : GADBannerView
@@ -2204,7 +2204,7 @@ namespace GoogleMobileAds
 		// +(void)loadWithAdManagerAdUnitID:(NSString * _Nonnull)adUnitID request:(GAMRequest * _Nullable)request completionHandler:(GAMInterstitialAdLoadCompletionHandler _Nonnull)completionHandler;
 		[Static]
 		[Export("loadWithAdManagerAdUnitID:request:completionHandler:")]
-		void LoadWithAdManagerAdUnitID(string adUnitID, [NullAllowed] GAMRequest request,
+		void Load(string adUnitID, [NullAllowed] GAMRequest request,
 			GAMInterstitialAdLoadCompletionHandler completionHandler);
 	}
 
@@ -2396,7 +2396,7 @@ namespace GoogleMobileAds
 		// @required -(void)getBannerWithSize:(GADAdSize)adSize;
 		[Abstract]
 		[Export("getBannerWithSize:")]
-		void GetBannerWithSize(GADAdSize adSize);
+		void GetBanner(GADAdSize adSize);
 
 		// @required -(void)getInterstitial;
 		[Abstract]
@@ -2415,7 +2415,7 @@ namespace GoogleMobileAds
 
 		// @optional -(void)getNativeAdWithAdTypes:(NSArray<GADAdLoaderAdType> *)adTypes options:(NSArray<GADAdLoaderOptions *> *)options;
 		[Export("getNativeAdWithAdTypes:options:")]
-		void GetNativeAdWithAdTypes(string[] adTypes, GADAdLoaderOptions[] options);
+		void GetNativeAd(string[] adTypes, GADAdLoaderOptions[] options);
 
 		// @optional -(BOOL)handlesUserClicks;
 		[Export("handlesUserClicks")] bool HandlesUserClicks { get; }
@@ -2425,7 +2425,7 @@ namespace GoogleMobileAds
 
 		// @optional -(void)changeAdSizeTo:(GADAdSize)adSize;
 		[Export("changeAdSizeTo:")]
-		void ChangeAdSizeTo(GADAdSize adSize);
+		void ChangeAdSize(GADAdSize adSize);
 	}
 
 	// @interface GADMediatedUnifiedNativeAdNotificationSource : NSObject
@@ -2554,7 +2554,7 @@ namespace GoogleMobileAds
 		// @required -(void)didFailToPresentWithError:(NSError * _Nonnull)error;
 		[Abstract]
 		[Export("didFailToPresentWithError:")]
-		void DidFailToPresentWithError(NSError error);
+		void DidFailToPresent(NSError error);
 
 		// @required -(void)willDismissFullScreenView;
 		[Abstract]
@@ -2687,7 +2687,7 @@ namespace GoogleMobileAds
 
 		// @optional -(void)changeAdSizeTo:(GADAdSize)adSize;
 		[Export("changeAdSizeTo:")]
-		void ChangeAdSizeTo(GADAdSize adSize);
+		void ChangeAdSize(GADAdSize adSize);
 	}
 
 	// @protocol GADMediationInterscrollerAd <GADMediationBannerAd>
@@ -2828,25 +2828,25 @@ namespace GoogleMobileAds
 	{}
 
 // typedef id<GADMediationBannerAdEventDelegate> _Nullable (^GADMediationBannerLoadCompletionHandler)(id<GADMediationBannerAd> _Nullable, NSError * _Nullable);
-	delegate GADMediationBannerAdEventDelegate GADMediationBannerLoadCompletionHandler ([NullAllowed] IGADMediationBannerAd arg0, [NullAllowed] NSError arg1);
+	delegate GADMediationBannerAdEventDelegate GADMediationBannerLoadCompletionHandler ([NullAllowed] IGADMediationBannerAd ad, [NullAllowed] NSError err);
 
 	// typedef id<GADMediationBannerAdEventDelegate> _Nullable (^GADMediationInterscrollerAdLoadCompletionHandler)(id<GADMediationInterscrollerAd> _Nullable, NSError * _Nullable);
-	delegate GADMediationBannerAdEventDelegate GADMediationInterscrollerAdLoadCompletionHandler ([NullAllowed] IGADMediationInterscrollerAd arg0, [NullAllowed] NSError arg1);
+	delegate GADMediationBannerAdEventDelegate GADMediationInterscrollerAdLoadCompletionHandler ([NullAllowed] IGADMediationInterscrollerAd ad, [NullAllowed] NSError err);
 
 	// typedef id<GADMediationInterstitialAdEventDelegate> _Nullable (^GADMediationInterstitialLoadCompletionHandler)(id<GADMediationInterstitialAd> _Nullable, NSError * _Nullable);
-	delegate GADMediationInterstitialAdEventDelegate GADMediationInterstitialLoadCompletionHandler ([NullAllowed] IGADMediationInterstitialAd arg0, [NullAllowed] NSError arg1);
+	delegate GADMediationInterstitialAdEventDelegate GADMediationInterstitialLoadCompletionHandler ([NullAllowed] IGADMediationInterstitialAd ad, [NullAllowed] NSError err);
 
 	// typedef id<GADMediationNativeAdEventDelegate> _Nullable (^GADMediationNativeLoadCompletionHandler)(id<GADMediationNativeAd> _Nullable, NSError * _Nullable);
-	delegate GADMediationNativeAdEventDelegate GADMediationNativeLoadCompletionHandler ([NullAllowed] IGADMediationNativeAd arg0, [NullAllowed] NSError arg1);
+	delegate GADMediationNativeAdEventDelegate GADMediationNativeLoadCompletionHandler ([NullAllowed] IGADMediationNativeAd ad, [NullAllowed] NSError err);
 
 	// typedef id<GADMediationRewardedAdEventDelegate> _Nullable (^GADMediationRewardedLoadCompletionHandler)(id<GADMediationRewardedAd> _Nullable, NSError * _Nullable);
-	delegate GADMediationRewardedAdEventDelegate GADMediationRewardedLoadCompletionHandler ([NullAllowed] IGADMediationRewardedAd arg0, [NullAllowed] NSError arg1);
+	delegate GADMediationRewardedAdEventDelegate GADMediationRewardedLoadCompletionHandler ([NullAllowed] IGADMediationRewardedAd ad, [NullAllowed] NSError err);
 
 	// typedef id<GADMediationAppOpenAdEventDelegate> _Nullable (^GADMediationAppOpenLoadCompletionHandler)(id<GADMediationAppOpenAd> _Nullable, NSError * _Nullable);
-	delegate GADMediationAppOpenAdEventDelegate GADMediationAppOpenLoadCompletionHandler ([NullAllowed] IGADMediationAppOpenAd arg0, [NullAllowed] NSError arg1);
+	delegate GADMediationAppOpenAdEventDelegate GADMediationAppOpenLoadCompletionHandler ([NullAllowed] IGADMediationAppOpenAd ad, [NullAllowed] NSError err);
 
 	// typedef void (^GADMediationAdapterSetUpCompletionBlock)(NSError * _Nullable);
-	delegate void GADMediationAdapterSetUpCompletionBlock ([NullAllowed] NSError arg0);
+	delegate void GADMediationAdapterSetUpCompletionBlock ([NullAllowed] NSError err);
 
 	// @protocol GADMediationAdapter <NSObject>
 	/*
@@ -2878,11 +2878,11 @@ namespace GoogleMobileAds
 		// @optional +(void)setUpWithConfiguration:(GADMediationServerConfiguration * _Nonnull)configuration completionHandler:(GADMediationAdapterSetUpCompletionBlock _Nonnull)completionHandler;
 		[Static]
 		[Export ("setUpWithConfiguration:completionHandler:")]
-		void SetUpWithConfiguration (GADMediationServerConfiguration configuration, GADMediationAdapterSetUpCompletionBlock completionHandler);
+		void SetUp (GADMediationServerConfiguration configuration, GADMediationAdapterSetUpCompletionBlock completionHandler);
 
 		// @optional -(void)loadBannerForAdConfiguration:(GADMediationBannerAdConfiguration * _Nonnull)adConfiguration completionHandler:(GADMediationBannerLoadCompletionHandler _Nonnull)completionHandler;
 		[Export ("loadBannerForAdConfiguration:completionHandler:")]
-		void LoadBannerForAdConfiguration (GADMediationBannerAdConfiguration adConfiguration, GADMediationBannerLoadCompletionHandler completionHandler);
+		void LoadBanner (GADMediationBannerAdConfiguration adConfiguration, GADMediationBannerLoadCompletionHandler completionHandler);
 
 		// @optional -(void)loadInterscrollerAdForAdConfiguration:(GADMediationBannerAdConfiguration * _Nonnull)adConfiguration completionHandler:(GADMediationInterscrollerAdLoadCompletionHandler _Nonnull)completionHandler;
 		[Export ("loadInterscrollerAdForAdConfiguration:completionHandler:")]
@@ -2894,19 +2894,19 @@ namespace GoogleMobileAds
 
 		// @optional -(void)loadNativeAdForAdConfiguration:(GADMediationNativeAdConfiguration * _Nonnull)adConfiguration completionHandler:(GADMediationNativeLoadCompletionHandler _Nonnull)completionHandler;
 		[Export ("loadNativeAdForAdConfiguration:completionHandler:")]
-		void LoadNativeAdForAdConfiguration (GADMediationNativeAdConfiguration adConfiguration, GADMediationNativeLoadCompletionHandler completionHandler);
+		void LoadNativeAd (GADMediationNativeAdConfiguration adConfiguration, GADMediationNativeLoadCompletionHandler completionHandler);
 
 		// @optional -(void)loadRewardedAdForAdConfiguration:(GADMediationRewardedAdConfiguration * _Nonnull)adConfiguration completionHandler:(GADMediationRewardedLoadCompletionHandler _Nonnull)completionHandler;
 		[Export ("loadRewardedAdForAdConfiguration:completionHandler:")]
-		void LoadRewardedAdForAdConfiguration (GADMediationRewardedAdConfiguration adConfiguration, GADMediationRewardedLoadCompletionHandler completionHandler);
+		void LoadRewardedAd (GADMediationRewardedAdConfiguration adConfiguration, GADMediationRewardedLoadCompletionHandler completionHandler);
 
 		// @optional -(void)loadRewardedInterstitialAdForAdConfiguration:(GADMediationRewardedAdConfiguration * _Nonnull)adConfiguration completionHandler:(GADMediationRewardedLoadCompletionHandler _Nonnull)completionHandler;
 		[Export ("loadRewardedInterstitialAdForAdConfiguration:completionHandler:")]
-		void LoadRewardedInterstitialAdForAdConfiguration (GADMediationRewardedAdConfiguration adConfiguration, GADMediationRewardedLoadCompletionHandler completionHandler);
+		void LoadRewardedInterstitialAd (GADMediationRewardedAdConfiguration adConfiguration, GADMediationRewardedLoadCompletionHandler completionHandler);
 
 		// @optional -(void)loadAppOpenAdForAdConfiguration:(GADMediationAppOpenAdConfiguration * _Nonnull)adConfiguration completionHandler:(GADMediationAppOpenLoadCompletionHandler _Nonnull)completionHandler;
 		[Export ("loadAppOpenAdForAdConfiguration:completionHandler:")]
-		void LoadAppOpenAdForAdConfiguration (GADMediationAppOpenAdConfiguration adConfiguration, GADMediationAppOpenLoadCompletionHandler completionHandler);
+		void LoadAppOpenAd (GADMediationAppOpenAdConfiguration adConfiguration, GADMediationAppOpenLoadCompletionHandler completionHandler);
 	}
 	
 	interface IGADMediationAppOpenLoadCompletionHandler {}
@@ -2948,7 +2948,7 @@ namespace GoogleMobileAds
 	}
 
 	// typedef void (^GADRTBSignalCompletionHandler)(NSString * _Nullable, NSError * _Nullable);
-	delegate void GADRTBSignalCompletionHandler ([NullAllowed] string arg0, [NullAllowed] NSError arg1);
+	delegate void GADRTBSignalCompletionHandler ([NullAllowed] string str, [NullAllowed] NSError err);
 
 	
 

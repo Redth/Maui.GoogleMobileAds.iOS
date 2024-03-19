@@ -7,12 +7,13 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <!-- Linker flags, Frameworks, WeakFrameworks, etc can be found in the podspec -->
+        <!-- eg: https://github.com/CocoaPods/Specs/blob/master/Specs/7/e/f/GoogleUserMessagingPlatform/2.3.0/GoogleUserMessagingPlatform.podspec.json -->
         <NativeReference Include="../.build/UserMessagingPlatform.xcframework">
             <Kind>Static</Kind>
             <SmartLink>True</SmartLink>
             <ForceLoad>True</ForceLoad>
             <LinkerFlags>-ObjC</LinkerFlags>
-            <!-- Found in Podspec (eg: https://github.com/CocoaPods/Specs/blob/master/Specs/5/9/a/Google-Mobile-Ads-SDK/11.2.0/Google-Mobile-Ads-SDK.podspec.json )-->
             <Frameworks>WebKit</Frameworks>
             <WeakFrameworks>AdSupport</WeakFrameworks>
         </NativeReference>

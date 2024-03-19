@@ -3,6 +3,9 @@ using Microsoft.Maui.Handlers;
 
 #if IOS
 using NativeBannerAdView = GoogleMobileAds.GADBannerView;
+using Foundation;
+using UIKit;
+using GoogleMobileAds;
 #else
 using NativeBannerAdView = object;
 #endif
@@ -33,7 +36,7 @@ public partial class GoogleAdsBannerHandler : ViewHandler<IGoogleAdsBannerView, 
         // particular orientation,
         var adaptiveSize = GoogleMobileAds.AdSize.GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(viewWidth);
         var bannerView = new GoogleMobileAds.GADBannerView(adaptiveSize);
-        
+        bannerView.Delegate = new BannerDg();
         return bannerView;
 #else
 		return null;
@@ -56,3 +59,19 @@ public partial class GoogleAdsBannerHandler : ViewHandler<IGoogleAdsBannerView, 
 public partial class GoogleAdsBannerView : View, IGoogleAdsBannerView
 {
 }
+
+#if IOS
+public class BannerDg : GoogleMobileAds.GADBannerViewDelegate
+{
+   public override void BannerView(GADBannerView bannerView, NSError error)
+	{
+		Console.WriteLine("DidFailToReceiveAd " + error.Description);
+	}
+
+	public override void BannerViewDidReceiveAd(GADBannerView bannerView)
+	{
+		Console.WriteLine("BannerViewDidReceiveAd");
+	}
+}
+
+#endif

@@ -9,7 +9,7 @@
     <ItemGroup>
         <NativeReference Include="../.build/GoogleMobileAds.xcframework">
             <Kind>Framework</Kind>
-            <SmartLink>True</SmartLink>
+            <SmartLink>False</SmartLink>
         </NativeReference>
     </ItemGroup>
 

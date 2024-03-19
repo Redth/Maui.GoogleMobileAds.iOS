@@ -8,8 +8,13 @@
 
     <ItemGroup>
         <NativeReference Include="../.build/UserMessagingPlatform.xcframework">
-            <Kind>Framework</Kind>
-            <SmartLink>False</SmartLink>
+            <Kind>Static</Kind>
+            <SmartLink>True</SmartLink>
+            <ForceLoad>True</ForceLoad>
+            <LinkerFlags>-ObjC</LinkerFlags>
+            <!-- Found in Podspec (eg: https://github.com/CocoaPods/Specs/blob/master/Specs/5/9/a/Google-Mobile-Ads-SDK/11.2.0/Google-Mobile-Ads-SDK.podspec.json )-->
+            <Frameworks>WebKit</Frameworks>
+            <WeakFrameworks>AdSupport</WeakFrameworks>
         </NativeReference>
     </ItemGroup>
 

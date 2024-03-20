@@ -19,7 +19,7 @@ jobs:
         dotnet workload install maui ios maccatalyst android tvos macos
 
     - name: Build
-      run: make binding
+      run: pwsh ./build.ps1
 
     - name: Artifact
       uses: actions/upload-artifact@v4.3.1

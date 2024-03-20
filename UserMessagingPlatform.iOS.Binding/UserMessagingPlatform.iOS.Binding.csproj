@@ -9,7 +9,7 @@
     <ItemGroup>
         <!-- Linker flags, Frameworks, WeakFrameworks, etc can be found in the podspec -->
         <!-- eg: https://github.com/CocoaPods/Specs/blob/master/Specs/7/e/f/GoogleUserMessagingPlatform/2.3.0/GoogleUserMessagingPlatform.podspec.json -->
-        <NativeReference Include="../.build/UserMessagingPlatform.xcframework">
+        <NativeReference Include="../.build/GoogleUserMessagingPlatform/Frameworks/Release/UserMessagingPlatform.xcframework">
             <Kind>Static</Kind>
             <SmartLink>True</SmartLink>
             <ForceLoad>True</ForceLoad>

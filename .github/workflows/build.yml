@@ -19,13 +19,19 @@ jobs:
         dotnet workload install maui ios maccatalyst android tvos macos
 
     - name: Build
-      run: pwsh ./build.ps1
+      run: pwsh ./build.ps1 -BuildVersion "$env:GITHUB_RUN_ID" -IsRelease ($env:GITHUB_EVENT_NAME -eq "release") -BuildNuGet $true -GenerateBindings $true
 
-    - name: Artifact
+    - name: NuGet Artifact
       uses: actions/upload-artifact@v4.3.1
       with:
         name: NuGet
         path: .build/NuGet/*.nupkg
+
+    - name: Bindings Artifact
+      uses: actions/upload-artifact@v4.3.1
+      with:
+        name: Bindings
+        path: .build/Bindings
 
   Publish:
     runs-on: macos-latest

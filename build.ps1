@@ -3,7 +3,9 @@ param (
 	[String]$UserMessagingPlatformVersion = '2.3.0',
 	[String]$BuildPath = '.build/',
 	[Bool]$BuildNuGet = $true,
-	[Bool]$GenerateBindings = $false
+	[Bool]$GenerateBindings = $false,
+	[String]$BuildNumber = '0',
+	[Bool]$IsRelease = $false
 )
 
 
@@ -47,15 +49,24 @@ Remove-Item -Recurse -Force -Path $BuildPath -ErrorAction SilentlyContinue
 DownloadGoogleMobileAdsSdks -MobileAdsVersion $MobileAdsVersion -UserMessagingPlatformVersion $UserMessagingPlatformVersion -DownloadPath $BuildPath
 
 if ($BuildNuGet -eq $True) {
+
+	if ($IsRelease -eq $true) {
+		$NuGetMobileAdsVersion = "$MobileAdsVersion.$BuildNumber"
+		$NuGetUserMessagingPlatformVersion = "$UserMessagingPlatformVersion.$BuildNumber"
+	} else {
+		$NuGetMobileAdsVersion = "$MobileAdsVersion-ci.$BuildNumber"
+		$NuGetUserMessagingPlatformVersion = "$UserMessagingPlatformVersion-ci.$BuildNumber"
+	}
+
 	$NuGetOutputPath = (Join-Path $BuildPath "NuGet")
 	New-Item -ItemType Directory -Force -Path $NuGetOutputPath -ErrorAction SilentlyContinue
 
-	dotnet build -t:Pack -c:Release -p:PackageVersion=$MobileAdsVersion -p:PackageOutputPath=$NuGetOutputPath ./GoogleMobileAds.iOS.Binding/GoogleMobileAds.iOS.Binding.csproj
-	dotnet build -t:Pack -c:Release -p:PackageVersion=$UserMessagingPlatformVersion -p:PackageOutputPath=$NuGetOutputPath ./UserMessagingPlatform.iOS.Binding/UserMessagingPlatform.iOS.Binding.csproj
+	dotnet build -t:Pack -c:Release -p:PackageVersion=$NuGetMobileAdsVersion -p:PackageOutputPath=$NuGetOutputPath ./GoogleMobileAds.iOS.Binding/GoogleMobileAds.iOS.Binding.csproj
+	dotnet build -t:Pack -c:Release -p:PackageVersion=$NuGetUserMessagingPlatformVersion -p:PackageOutputPath=$NuGetOutputPath ./UserMessagingPlatform.iOS.Binding/UserMessagingPlatform.iOS.Binding.csproj
 }
 
 if ($GenerateBindings -eq $True) {
-	$BindingOutputPath = (Join-Path $BuildPath "Binding")
+	$BindingOutputPath = (Join-Path $BuildPath "Bindings")
 	New-Item -ItemType Directory -Force -Path $BindingOutputPath -ErrorAction SilentlyContinue
 
 	& sharpie bind --sdk=iphoneos17.2 --output (Join-Path $BindingOutputPath "UserMessagingPlatform/") --namespace=UserMessagingPlatform --framework (Join-Path $BuildPath "GoogleUserMessagingPlatform/Frameworks/Release/UserMessagingPlatform.xcframework/ios-arm64/UserMessagingPlatform.framework")
